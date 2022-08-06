@@ -1,0 +1,21 @@
+.hero {
+    height: 450px;
+    background-image: url(../img/back.png);
+    margin-bottom: 2rem;
+    position: relative;
+}
+.contenido-hero {
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+   align-items: center;
+   justify-content: center;
+}
+
+.contenido-hero h2, 
+.contenido-hero p {
+    color: var(--blanco);
+}

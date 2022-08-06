@@ -1,0 +1,8 @@
+# SESIONES
+sessions/
+
+# vendor
+vendor/
+
+# extensiones
+extensiones/
