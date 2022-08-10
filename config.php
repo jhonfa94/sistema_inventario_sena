@@ -77,7 +77,6 @@ require_once "modelos/categorias.modelo.php";
 require_once "modelos/productos.modelo.php";
 require_once "modelos/instructores.modelo.php";
 require_once "modelos/prestamos.modelo.php";
-require_once "extensiones/vendor/autoload.php";
 require_once "modelos/movimiento.modelo.php";
 require_once "modelos/reporte.modelo.php";
 
