@@ -964,5 +964,26 @@ $(document).on("click", ".btnModalInfo", function () {
 
 });
 
+/**
+ * ITERACION PARA CUANDO SE DA CLIC EN EL BOTON DE REPORTE EN PDF
+ */
+$(document).on("click", ".btnModalPdf", function () {
+	let idprestamo = $(this).attr('idprestamo');
+
+	$("#btnDescargarPdfPrestamo").attr('data-id', idprestamo);
+
+	$("#titleModalInfoPrestamoPdf").text(`Préstamo:  ${idprestamo}`);
+
+	let url_pdf = `/inventario_sena/reports/prestamos/prestamo.pdf.php?reportepdf=ok&prestamo_id=${idprestamo}`;
+	$("#iframePrestamoPdf").attr('src', url_pdf);
+
+});
+
+$(document).on("click", "#btnDescargarPdfPrestamo", function () {
+	let idprestamo = $(this).attr('data-id');
+	let url_download = `/inventario_sena/reports/prestamos/prestamo.pdf.php?reportepdf=ok&prestamo_id=${idprestamo}&download=download`;
+	window.location = url_download;
+});
+
 
 

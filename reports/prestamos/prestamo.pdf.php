@@ -1,6 +1,8 @@
 <?php
 include '../../config.php';
-
+// $file =  __DIR__ . '/../../../inventario_sena/vistas/img/plantilla/logo.jpg';
+// var_dump(is_file($file));
+// die();
 // Extend the TCPDF class to create custom Header and Footer
 class MYPDF extends TCPDF
 {
@@ -9,10 +11,11 @@ class MYPDF extends TCPDF
     public function Header()
     {
         // Logo
-        $image_file = K_PATH_IMAGES . 'logo_example.jpg';
+        // $image_file = K_PATH_IMAGES . 'logo_example.jpg';
+        $image_file =  __DIR__ . '/../../../inventario_sena/vistas/img/plantilla/logo.png';
         // $image_file = LOGO;
         // $image_file = "http://localhost/inventario_sena/vistas/img/plantilla/logo.jpg";
-        //$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $this->Image($image_file, 10, 10, 25, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         //$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
         $this->setFont('helvetica', 'B', 20);
@@ -45,7 +48,7 @@ class MYPDF extends TCPDF
 class PrestamoPdf
 {
 
-    public static function generarPdf(int $prestamo_id)
+    public static function generarPdf(int $prestamo_id, string $download = '')
     {
         $datosPrestamo = ModeloPrestamos::datosPdf($prestamo_id);
         $instructor = $datosPrestamo[0]['instructor'];
@@ -110,6 +113,9 @@ class PrestamoPdf
         $pdf->Write(15, "", '', 0, 'C', true, 0, false, false, 0);
         // $fecha = date("Y-m-d");
         $tbl = <<<EOD
+            <div style="text-align:center">
+                <h3>PEDIDO N°. $prestamo_id</h3>
+            </div>
             <table cellspacing="0" cellpadding="1" border="1">
                 <tr>
                     <td colspan="2">Funcionario que recibe: $instructor </td>
@@ -156,11 +162,39 @@ class PrestamoPdf
 
         $pdf->writeHTML($tbl2, true, false, false, false, 'L');
 
+        
+        $div = <<<EOD
+            <div>
+                <table cellspacing="0" cellpadding="1" border="1">
+                    <tr align="">
+                        <th>Cantidad</th>
+                        <td align="center">$totalCantidad</td>
+                    </tr>               
+                    <tr align="">
+                        <th>Verficado</th>
+                        <td></td>
+                    </tr>               
+                    <tr align="">
+                        <th>Vo.Bo</th>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        EOD;
+
+        $pdf->writeHTML($div, true, false, false, false, 'L');
+
 
         // ---------------------------------------------------------
 
         //Close and output PDF document
-        $pdf->Output('example_003.pdf', 'I');
+        if ($download != '') {
+            $pdf->Output("Prestamo_$prestamo_id.pdf", 'D');
+            
+        } else {
+            $pdf->Output("Prestamo_$prestamo_id.pdf", 'I');
+           
+        }
 
         //============================================================+
         // END OF FILE
@@ -169,6 +203,7 @@ class PrestamoPdf
 }
 
 if (isset($_REQUEST['reportepdf']) && $_REQUEST['reportepdf'] == 'ok') {
-    PrestamoPdf::generarPdf(intval($_REQUEST['prestamo_id']));
+    $download = isset($_REQUEST['download']) ? $_REQUEST['download'] : '';
+    PrestamoPdf::generarPdf(intval($_REQUEST['prestamo_id']), $download);
      
 }
