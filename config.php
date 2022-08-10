@@ -16,6 +16,7 @@ define('URL', "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/inventar
 define('URL_INVENTARIO', "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/inventario_sena");
 define('DIR_INVENTARIO', "{$_SERVER['DOCUMENT_ROOT']}/inventario_sena");
 define('HASH_PASSWORD', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+define('LOGO', URL. '/vistas/img/plantilla/logo.jpg');
 
 
 /* ===================== 

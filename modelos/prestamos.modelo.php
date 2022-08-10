@@ -370,4 +370,33 @@ class ModeloPrestamos
 		$stmt->closeCursor();
 		return $retorno;
 	}
+
+	/**
+	 * DATOS DEL PRESTAMO PARA EL PDF 
+	 *
+	 * @param integer $prestamo_id
+	 * @return array
+	 */
+	public static function datosPdf(int $prestamo_id): array
+	{
+		$stmt = Conexion::conectar()->prepare("SELECT pd.prestamo_id, pd.producto_id, pd.cantidad, 
+				IF(p.tipo_prestamo = 'Devolutivo', 'X', '') AS devolutivo,
+				IF(p.tipo_prestamo = 'Consumible', 'X', '') AS consumible,
+				u.nombre AS usuario, 
+				i.nombre AS instructor,
+				DATE(p.fecha) AS fecha,
+				pr.descripcion AS producto
+			FROM prestamo_detalle pd
+			JOIN prestamos p ON pd.prestamo_id = p.id
+			JOIN usuarios u ON p.id_usuario = u.id
+			JOIN instructores i ON p.id_instructor = i.id
+			JOIN productos pr ON pr.id = pd.producto_id
+			WHERE pd.prestamo_id = :prestamo_id
+		");
+		$stmt->bindParam(':prestamo_id', $prestamo_id, PDO::PARAM_INT);
+		$stmt->execute();
+		$retorno = $stmt->rowCount() > 0 ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+		$stmt->closeCursor();
+		return $retorno;
+	}
 }
