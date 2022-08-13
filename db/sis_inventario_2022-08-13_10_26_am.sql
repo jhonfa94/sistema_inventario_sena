@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   `categoria` text COLLATE utf8mb3_spanish_ci NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 -- Volcando datos para la tabla sis_inventario.categorias: ~4 rows (aproximadamente)
 DELETE FROM `categorias`;
@@ -35,29 +35,31 @@ INSERT INTO `categorias` (`id`, `categoria`, `fecha`) VALUES
 	(1, 'Equipos de Cómputo', '2022-05-09 17:52:08'),
 	(2, 'Útiles de Aseo', '2022-05-09 17:52:28'),
 	(3, 'Útiles de Papelería', '2022-05-09 17:52:40'),
-	(7, 'SERVICIOS', '2022-08-06 12:43:36');
+	(7, 'SERVICIOS', '2022-08-06 12:43:36'),
+	(8, 'Móviles ', '2022-08-13 13:20:24');
 
 -- Volcando estructura para tabla sis_inventario.instructores
 DROP TABLE IF EXISTS `instructores`;
 CREATE TABLE IF NOT EXISTS `instructores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` text COLLATE utf8mb3_spanish_ci NOT NULL,
-  `documento` int(11) NOT NULL,
+  `documento` bigint(20) NOT NULL,
   `email` text COLLATE utf8mb3_spanish_ci NOT NULL,
   `telefono` text COLLATE utf8mb3_spanish_ci NOT NULL,
   `direccion` text COLLATE utf8mb3_spanish_ci NOT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `entradas` int(11) NOT NULL,
-  `ultima_entrada` datetime NOT NULL,
+  `entradas` int(11) DEFAULT NULL,
+  `ultima_entrada` datetime DEFAULT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 -- Volcando datos para la tabla sis_inventario.instructores: ~2 rows (aproximadamente)
 DELETE FROM `instructores`;
 INSERT INTO `instructores` (`id`, `nombre`, `documento`, `email`, `telefono`, `direccion`, `fecha_nacimiento`, `entradas`, `ultima_entrada`, `fecha`) VALUES
-	(1, 'Jhon Fabio ', 1093537019, 'programasjhonfa@gmai.com', '3105667418', 'CR 5 # 5-55', '1994-05-09', 6, '2022-05-09 23:08:04', '2022-05-10 04:08:05'),
-	(3, 'Juan Villegas', 2147483647, 'juan@hotmail.com', '(300) 341-2345', 'Calle 23 # 45 - 56', '1980-11-02', 7, '2022-02-06 17:47:02', '2022-02-06 22:47:02');
+	(1, 'Jhon Fabio  card', 1093537019, 'programasjhonfa@gmai.com', '(310) 566-7418', 'CR 5 # 5-55', '1994-05-09', 6, '2022-05-09 23:08:04', '2022-08-12 03:30:07'),
+	(3, 'Juan Villegas', 2147483647, 'juan@hotmail.com', '(300) 341-2345', 'Calle 23 # 45 - 56', '1980-11-02', 7, '2022-02-06 17:47:02', '2022-02-06 22:47:02'),
+	(13, 'Juan fernando Urrego', 238923489, 'juqn@gmai.com', '(122) 312-1231', 'medellin colombia', '2000-02-20', NULL, NULL, '2022-08-13 13:39:38');
 
 -- Volcando estructura para tabla sis_inventario.inventario
 DROP TABLE IF EXISTS `inventario`;
@@ -131,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `prestamo_detalle` (
   CONSTRAINT `FK_prestamo_detalle_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Tabla para almacenar los productos del prestamo del detalle';
 
--- Volcando datos para la tabla sis_inventario.prestamo_detalle: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla sis_inventario.prestamo_detalle: ~2 rows (aproximadamente)
 DELETE FROM `prestamo_detalle`;
 INSERT INTO `prestamo_detalle` (`id`, `prestamo_id`, `producto_id`, `cantidad`) VALUES
 	(1, 52, 62, 1),
@@ -154,14 +156,15 @@ CREATE TABLE IF NOT EXISTS `productos` (
   PRIMARY KEY (`id`),
   KEY `FK_producto_id_categoria` (`id_categoria`),
   CONSTRAINT `FK_producto_id_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
--- Volcando datos para la tabla sis_inventario.productos: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla sis_inventario.productos: ~4 rows (aproximadamente)
 DELETE FROM `productos`;
 INSERT INTO `productos` (`id`, `id_categoria`, `codigo`, `descripcion`, `imagen`, `stock`, `marca`, `serial`, `prestamos`, `fecha`) VALUES
 	(2, 1, '102', 'Computador Hp Pavilion', 'vistas/img/productos/102/940.jpg', 10, '4500', '6300', 3, '2022-08-06 15:08:39'),
 	(61, 3, '100', 'Boligrafos', NULL, 75, 'Allegro', 'zxzzzz', 0, '2022-08-06 15:09:18'),
-	(62, 1, '103', 'Video Bean', 'vistas/img/productos/103/742.png', 4, 'Sony', '13145asd6f', 0, '2022-08-06 16:33:05');
+	(62, 1, '103', 'Video Bean', 'vistas/img/productos/103/742.png', 4, 'Sony', '13145asd6f', 0, '2022-08-06 16:33:05'),
+	(63, 1, 'mouse123', 'Mouse inalmbrico', 'vistas/img/productos/mouse123/651.jpg', 22, 'Lenovo', 'JLKASJDF8I', 0, '2022-08-13 13:17:05');
 
 -- Volcando estructura para tabla sis_inventario.usuarios
 DROP TABLE IF EXISTS `usuarios`;
@@ -176,15 +179,16 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `ultimo_login` datetime NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 -- Volcando datos para la tabla sis_inventario.usuarios: ~4 rows (aproximadamente)
 DELETE FROM `usuarios`;
 INSERT INTO `usuarios` (`id`, `nombre`, `usuario`, `password`, `perfil`, `foto`, `estado`, `ultimo_login`, `fecha`) VALUES
-	(1, 'Marta Isaza', 'admin', '$2a$07$asxx54ahjppf45sd87a5auXBm1Vr2M1NV5t/zNQtGHGpS5fFirrbG', 'Administrador', 'vistas/img/usuarios/admin/admin.png', 1, '2022-08-06 13:59:15', '2022-08-06 18:59:15'),
+	(1, 'Marta Isaza', 'admin', '$2a$07$asxx54ahjppf45sd87a5auXBm1Vr2M1NV5t/zNQtGHGpS5fFirrbG', 'Administrador', 'vistas/img/usuarios/admin/admin.png', 1, '2022-08-13 10:10:15', '2022-08-13 15:10:15'),
 	(58, 'Diana Rico', 'diana', '$2a$07$asxx54ahjppf45sd87a5auQhldmFjGsrgUipGlmQgDAcqevQZSAAC', 'Funcionario', 'vistas/img/usuarios/julio/100.png', 1, '2018-02-06 17:09:22', '2022-05-09 06:06:39'),
 	(59, 'Estella Saleme', 'Estella', '$2a$07$asxx54ahjppf45sd87a5auLd2AxYsA/2BbmGKNk2kMChC3oj7V0Ca', 'Vendedor', 'vistas/img/usuarios/ana/260.png', 1, '2022-05-09 19:21:40', '2022-05-09 06:06:42'),
-	(64, 'Delia Herazo', 'Delia', '$2a$07$asxx54ahjppf45sd87a5auFL5K1.Cmt9ZheoVVuudOi5BCi10qWly', 'Especial', 'vistas/img/usuarios/Ralquerque/116.jpg', 1, '2022-05-08 23:07:38', '2022-05-09 16:31:15');
+	(64, 'Delia Herazo', 'Delia', '$2a$07$asxx54ahjppf45sd87a5auFL5K1.Cmt9ZheoVVuudOi5BCi10qWly', 'Especial', 'vistas/img/usuarios/Ralquerque/116.jpg', 1, '2022-05-08 23:07:38', '2022-05-09 16:31:15'),
+	(65, 'Jhon Fabio Cardona Martinez', 'jhonfa', '$2a$07$asxx54ahjppf45sd87a5aumUskocpQucMnvwsUt.aC6WLWGcLNcY6', 'Administrador', 'vistas/img/usuarios/jhonfa/618.jpg', 1, '2022-08-13 10:10:32', '2022-08-13 15:10:32');
 
 -- Volcando estructura para función sis_inventario.f_lista_productos
 DROP FUNCTION IF EXISTS `f_lista_productos`;
