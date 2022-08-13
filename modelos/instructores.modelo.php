@@ -2,13 +2,15 @@
 
 
 
-class ModeloInstructores{
+class ModeloInstructores
+{
 
 	/*=============================================
 	CREAR INSTRUCTOR
 	=============================================*/
 
-	static public function mdlIngresarInstructor($tabla, $datos){
+	static public function mdlIngresarInstructor($tabla, $datos)
+	{
 
 		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre, documento, email, telefono, direccion, fecha_nacimiento) 
 			VALUES (:nombre, :documento, :email, :telefono, :direccion, :fecha_nacimiento)
@@ -21,59 +23,49 @@ class ModeloInstructores{
 		$stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
 		$stmt->bindParam(":fecha_nacimiento", $datos["fecha_nacimiento"], PDO::PARAM_STR);
 
-		if($stmt->execute()){
+		if ($stmt->execute()) {
 
+			$stmt->closeCursor();
 			return "ok";
-
-		}else{
+		} else {
 
 			return "error";
-		
 		}
-
-		$stmt->closeCursor();
-		$stmt = null;
-
 	}
 
 	/*=============================================
 	MOSTRAR CINSTRUCTORES
 	=============================================*/
 
-	static public function mdlMostrarInstructores($tabla, $item, $valor){
+	static public function mdlMostrarInstructores($tabla, $item, $valor)
+	{
 
-		if($item != null){
+		if ($item != null) {
 
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+			$stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
 
-			$stmt -> execute();
-
-			return $stmt -> fetch();
+			$stmt->execute();
+			$retorno =  $stmt->fetch();
 			$stmt->closeCursor();
-
-		}else{
+		} else {
 
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
-			$stmt -> execute();
-
-			return $stmt -> fetchAll();
+			$stmt->execute();
+			$retorno =  $stmt->fetchAll();
 			$stmt->closeCursor();
 		}
-
-		
-
-		$stmt = null;
-
+		return $retorno;
 	}
 
 	/*=============================================
 	EDITAR INSTRUCTOR
 	=============================================*/
 
-	static public function mdlEditarInstructor($tabla, $datos){
+	static public function mdlEditarInstructor($tabla, $datos)
+	{
 
 		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, documento = :documento, email = :email, telefono = :telefono, direccion = :direccion, fecha_nacimiento = :fecha_nacimiento WHERE id = :id");
 
@@ -85,72 +77,56 @@ class ModeloInstructores{
 		$stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
 		$stmt->bindParam(":fecha_nacimiento", $datos["fecha_nacimiento"], PDO::PARAM_STR);
 
-		if($stmt->execute()){
+		if ($stmt->execute()) {
 
+			$stmt->closeCursor();
 			return "ok";
-
-		}else{
+		} else {
 
 			return "error";
-		
 		}
-
-		$stmt->closeCursor();
-		$stmt = null;
-
 	}
 
 	/*=============================================
 	ELIMINAR INSTRUCTOR
 	=============================================*/
 
-	static public function mdlEliminarInstructor($tabla, $datos){
+	static public function mdlEliminarInstructor($tabla, $datos)
+	{
 
 		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
 
-		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+		$stmt->bindParam(":id", $datos, PDO::PARAM_INT);
 
-		if($stmt -> execute()){
+		if ($stmt->execute()) {
+			$stmt->closeCursor();
 
 			return "ok";
-		
-		}else{
+		} else {
 
-			return "error";	
-
+			return "error";
 		}
-
-		$stmt -> closeCursor();
-
-		$stmt = null;
-
 	}
 
 	/*=============================================
 	ACTUALIZAR INSTRUCTOR
 	=============================================*/
 
-	static public function mdlActualizarInstructor($tabla, $item1, $valor1, $valor){
-
+	static public function mdlActualizarInstructor($tabla, $item1, $valor1, $valor)
+	{
 		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET $item1 = :$item1 WHERE id = :id");
 
-		$stmt -> bindParam(":".$item1, $valor1, PDO::PARAM_STR);
-		$stmt -> bindParam(":id", $valor, PDO::PARAM_STR);
+		$stmt->bindParam(":" . $item1, $valor1, PDO::PARAM_STR);
+		$stmt->bindParam(":id", $valor, PDO::PARAM_STR);
 
-		if($stmt -> execute()){
+		if ($stmt->execute()) {
+
+			$stmt->closeCursor();
 
 			return "ok";
-		
-		}else{
+		} else {
 
-			return "error";	
-
+			return "error";
 		}
-
-		$stmt -> closeCursor();
-
-		$stmt = null;
-
 	}
-
 }
