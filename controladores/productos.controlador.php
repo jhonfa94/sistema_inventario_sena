@@ -45,6 +45,9 @@ class ControladorProductos{
 					=============================================*/
 
 					$directorio = "vistas/img/productos/".$_POST["nuevoCodigo"];
+					if (!is_dir(DIR_PROYECT . '/vistas/img/productos')) {
+						mkdir(DIR_PROYECT . '/vistas/img/productos', 0777);						
+					}
 
 					mkdir($directorio, 0755);
 
@@ -93,7 +96,7 @@ class ControladorProductos{
 					}
 
 				}
-				$console = 'alert(' . json_encode('Iniciando Query') . ');';
+				$console = 'console.log(' . json_encode('') . ');';
 				$console = sprintf('<script>%s</script>', $console);
 				echo $console;
 				$tabla = "productos";
@@ -188,6 +191,9 @@ class ControladorProductos{
 					=============================================*/
 
 					$directorio = "vistas/img/productos/".$_POST["editarCodigo"];
+					if (!is_dir(DIR_PROYECT . '/'.$directorio)) {
+						mkdir(DIR_PROYECT . '/'.$directorio, 0777);						
+					}
 
 					/*=============================================
 					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
