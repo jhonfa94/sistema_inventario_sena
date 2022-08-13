@@ -20,21 +20,19 @@ class ModeloPrestamos
 
 			$stmt->execute();
 
-			return $stmt->fetch();
+			$retorno =  $stmt->fetch();
+			$stmt->closeCursor();
 		} else {
 
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id ASC");
 
 			$stmt->execute();
 
-			return $stmt->fetchAll();
-
+			$retorno =  $stmt->fetchAll();
 			$stmt->closeCursor();
 		}
 
-
-
-		$stmt = null;
+		return $retorno;
 	}
 
 	/*=============================================
@@ -108,15 +106,13 @@ class ModeloPrestamos
 		$stmt->bindParam(":metodo_pago", $datos["metodo_pago"], PDO::PARAM_STR);
 
 		if ($stmt->execute()) {
+			$stmt->closeCursor();
 
 			return "ok";
 		} else {
 
 			return "error";
 		}
-
-		$stmt->closeCursor();
-		$stmt = null;
 	}
 
 	/*=============================================
@@ -132,15 +128,12 @@ class ModeloPrestamos
 
 		if ($stmt->execute()) {
 
+			$stmt->closeCursor();
 			return "ok";
 		} else {
 
 			return "error";
 		}
-
-		$stmt->closeCursor();
-
-		$stmt = null;
 	}
 
 	/**
@@ -316,8 +309,6 @@ class ModeloPrestamos
 		return $stmt->fetch();
 
 		$stmt->closeCursor();
-
-		$stmt = null;
 	}
 
 	/**
