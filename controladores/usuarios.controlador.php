@@ -12,7 +12,7 @@ class ControladorUsuarios{
 
 			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingUsuario"])){
 
-			   	$encriptar = crypt($_POST["ingPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+			   	$encriptar = crypt($_POST["ingPassword"], HASH_PASSWORD);
 
 				$tabla = "usuarios";
 
@@ -162,7 +162,7 @@ class ControladorUsuarios{
 
 				$tabla = "usuarios";
 
-				$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+				$encriptar = crypt($_POST["nuevoPassword"], HASH_PASSWORD);
 
 				$datos = array("nombre" => $_POST["nuevoNombre"],
 					           "usuario" => $_POST["nuevoUsuario"],
@@ -355,7 +355,7 @@ class ControladorUsuarios{
 
 					if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["editarPassword"])){
 
-						$encriptar = crypt($_POST["editarPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+						$encriptar = crypt($_POST["editarPassword"], HASH_PASSWORD);
 
 					}else{
 

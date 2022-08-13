@@ -8,6 +8,8 @@ vendor/
 extensiones/
 
 #IGNORAMOS CARPETAS DE LAS FOTOS
+vistas/img/productos
+vistas/img/usuarios
 
 # IGNORAMOS EL ARCHIVO DE VARIABLES DE ENTORNO DE PHP .env
 .env
