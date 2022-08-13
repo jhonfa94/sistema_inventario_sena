@@ -1,10 +1,12 @@
 <div id="back"></div>
 
-<div class="login-box">
+<div class="login-box" style="align-items:center;">
   
-  <div class="login-logo">
-
-    <img src="vistas/img/plantilla/Sena_logo.png" class="img-responsive">
+  <div class="login-logo" style="display:flex;justify-content:center;">
+    
+      <!-- <img src="vistas/img/plantilla/Sena_logo.png" class="img-responsive">       -->
+      <img src="<?= $_ENV['APP_LOGO'] ?>" class="img-responsive">      
+    
 
   </div>
 
