@@ -7,8 +7,7 @@ class Conexion
 {
 	/**
 	 * CONEXION A LA DB
-	 *
-	 * @return void
+	 * 
 	 */
 	public static function conectar()
 	{
