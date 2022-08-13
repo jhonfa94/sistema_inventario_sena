@@ -10,7 +10,9 @@ class ModeloInstructores{
 
 	static public function mdlIngresarInstructor($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre, documento, email, telefono, direccion, fecha_nacimiento) VALUES (:nombre, :documento, :email, :telefono, :direccion, :fecha_nacimiento)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre, documento, email, telefono, direccion, fecha_nacimiento) 
+			VALUES (:nombre, :documento, :email, :telefono, :direccion, :fecha_nacimiento)
+		");
 
 		$stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
 		$stmt->bindParam(":documento", $datos["documento"], PDO::PARAM_INT);

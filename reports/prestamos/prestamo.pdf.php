@@ -12,9 +12,10 @@ class MYPDF extends TCPDF
     {
         // Logo
         // $image_file = K_PATH_IMAGES . 'logo_example.jpg';
-        $image_file =  __DIR__ . '/../../../inventario_sena/vistas/img/plantilla/logo.png';
-        // $image_file = LOGO;
-        // $image_file = "http://localhost/inventario_sena/vistas/img/plantilla/logo.jpg";
+        // $image_file =  __DIR__ . '/../../../inventario_sena/vistas/img/plantilla/logo.png';
+        $image_file =   $_ENV['APP_LOGO'];
+        // $image_file =  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Sena_Colombia_logo.svg/150px-Sena_Colombia_logo.svg.png";        
+        /* $image_file = "http://localhost/inventario_sena/vistas/img/plantilla/logo.jpg"; */
         $this->Image($image_file, 10, 10, 25, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         //$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
@@ -62,10 +63,10 @@ class PrestamoPdf
 
         // set document information
         $pdf->setCreator(PDF_CREATOR);
-        $pdf->setAuthor('Nicola Asuni');
-        $pdf->setTitle('TCPDF Example 003');
-        $pdf->setSubject('TCPDF Tutorial');
-        $pdf->setKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->setAuthor('Jhon Fabio Cardona Martinez');
+        $pdf->setTitle('PRESTAMO PEDIDO ' . $prestamo_id);
+        $pdf->setSubject('@jhonfa94');
+        $pdf->setKeywords('TCPDF, PDF, @jhonfa94, ');
 
         // set default header data
         $pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -116,13 +117,13 @@ class PrestamoPdf
             <div style="text-align:center">
                 <h3>PEDIDO N°. $prestamo_id</h3>
             </div>
-            <table cellspacing="0" cellpadding="1" border="1">
+            <table cellspacing="0" cellpadding="10" border="1">
                 <tr>
-                    <td colspan="2">Funcionario que recibe: $instructor </td>
+                    <td colspan="2"><b>Funcionario que recibe:</b> $instructor </td>
                     <td align="right">Fecha: $fecha</td>
                 </tr>
                 <tr>
-                    <td colspan="3">Funcionario que entrega: $funcionario</td>                    
+                    <td colspan="3"><b>Funcionario que entrega:</b> $funcionario</td>                    
                 </tr>
                
             </table>
@@ -147,8 +148,8 @@ class PrestamoPdf
         }
 
         $tbl2 = <<<EOD
-            <table cellspacing="0" cellpadding="1" border="1">
-                <tr align="center">
+            <table cellspacing="0" cellpadding="8" border="1">
+                <tr align="center" style="font-weight:bold;">
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>Devolutivo</th>
@@ -164,35 +165,59 @@ class PrestamoPdf
 
         
         $div = <<<EOD
-            <div>
-                <table cellspacing="0" cellpadding="1" border="1">
-                    <tr align="">
-                        <th>Cantidad</th>
-                        <td align="center">$totalCantidad</td>
-                    </tr>               
-                    <tr align="">
-                        <th>Verficado</th>
-                        <td></td>
-                    </tr>               
-                    <tr align="">
-                        <th>Vo.Bo</th>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
+            <table cellspacing="0" cellpadding="8" border="1" width="200" align="center">
+                <tr>
+                    <th>Cantidad</th>
+                    <td>$totalCantidad</td>
+                </tr>               
+                <tr align="">
+                    <th>Verficado</th>
+                    <td></td>
+                </tr>               
+                <tr align="">
+                    <th>Vo.Bo</th>
+                    <td></td>
+                </tr>
+            </table>           
+
+            
         EOD;
 
         $pdf->writeHTML($div, true, false, false, false, 'L');
 
+        
+        $firmas = <<<EOD
+            <br>
+            <br>
+            <br>
+            <br>
+            <table cellspacing="2" cellpadding="5" border="0"  align="center">
+                <tr align="center">
+                    <td>
+                        <hr width="250">                        
+                        Firma funcionario que entrega
+                    </td>
+                    <td>
+                        <hr width="250">                        
+                        Firma funcionario que recibe                    
+                    </td>
+                </tr>  
+            </table>
+            
+        EOD;
+
+        $pdf->writeHTML($firmas, true, false, false, false, 'L');
 
         // ---------------------------------------------------------
 
+        $fecha_hoy= date('Y-m-d h-i-s A');
+
         //Close and output PDF document
         if ($download != '') {
-            $pdf->Output("Prestamo_$prestamo_id.pdf", 'D');
+            $pdf->Output("Prestamo_{$prestamo_id}_{$fecha_hoy}.pdf", 'D');
             
         } else {
-            $pdf->Output("Prestamo_$prestamo_id.pdf", 'I');
+            $pdf->Output("Prestamo_{$prestamo_id}_{$fecha_hoy}.pdf", 'I');
            
         }
 
@@ -204,6 +229,8 @@ class PrestamoPdf
 
 if (isset($_REQUEST['reportepdf']) && $_REQUEST['reportepdf'] == 'ok') {
     $download = isset($_REQUEST['download']) ? $_REQUEST['download'] : '';
-    PrestamoPdf::generarPdf(intval($_REQUEST['prestamo_id']), $download);
-     
+    PrestamoPdf::generarPdf(intval($_REQUEST['prestamo_id']), $download);     
+}else{
+    $url = URL_INVENTARIO;
+    header("Location: $url");
 }

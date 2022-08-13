@@ -1,15 +1,26 @@
 <?php
 
+/**
+ * Conexion
+ */
 class Conexion
 {
-
-	static public function conectar()
+	/**
+	 * CONEXION A LA DB
+	 *
+	 * @return void
+	 */
+	public static function conectar()
 	{
+		$db_host = $_ENV['DB_HOST'];
+		$db_name = $_ENV['DB_DATABASE'];
+		$db_username = $_ENV['DB_USERNAME'];
+		$db_password = $_ENV['DB_PASSWORD'];
 
 		$link = new PDO(
-			"mysql:host=localhost;dbname=sis_inventario",
-			"root",
-			"root"
+			"mysql:host=$db_host;dbname=$db_name",
+			$db_username,
+			$db_password,
 		);
 
 		$link->exec("set names utf8");

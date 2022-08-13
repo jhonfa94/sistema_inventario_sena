@@ -1,23 +1,28 @@
 <?php
+# CARGAMOS LAS DEPENDENCIAS DE PHP
+require_once __DIR__ . '/vendor/autoload.php';
+
+# IMPLEMENTAMOS EL PAQUETE DE VARIALES DE ENTORNO PARA EL PROYECTO
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 # ZONA HORARIA
 date_default_timezone_set('America/Bogota');
 
 /* ===================== 
   IGNORAMOS LOS ERRORES PARA EL AMBIENTE PRODUCTIVO
 ========================= */
-if ($_SERVER['HTTP_HOST'] == 'dominio.com.co' && $_SERVER['SERVER_NAME'] == 'dominio.com.co') {
-    error_reporting(0);
+if ($_ENV['APP_ENV'] == 'produccion') {
+  error_reporting(0);
 }
 
 /* ===================== 
   VARIABLES GLOBALES 
 ========================= */
-define('URL', "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/inventario_sena");
-define('URL_INVENTARIO', "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/inventario_sena");
-define('DIR_INVENTARIO', "{$_SERVER['DOCUMENT_ROOT']}/inventario_sena");
+define('URL', $_ENV['APP_URL']);
+define('URL_INVENTARIO', $_ENV['APP_URL']);
+define('DIR_PROYECT', $_ENV['APP_DIR_INVENTARIO']);
 define('HASH_PASSWORD', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
-define('LOGO', URL. '/vistas/img/plantilla/logo.jpg');
-
 
 /* ===================== 
   CONFIUGRACION DE SESIONES DEL PROYECTO 
@@ -33,11 +38,11 @@ session_cache_expire($duracion_sesion);
 session_set_cookie_params($duracion_sesion);
 
 # ruta de la sesion 
-if (!is_dir(DIR_INVENTARIO . '/sessions')) {
-    mkdir(DIR_INVENTARIO . '/sessions', 0777);
+if (!is_dir(DIR_PROYECT . '/sessions')) {
+  mkdir(DIR_PROYECT . '/sessions', 0777);
 }
 
-session_save_path(DIR_INVENTARIO . '/sessions');
+session_save_path(DIR_PROYECT . '/sessions');
 
 session_start();
 
@@ -47,18 +52,18 @@ session_start();
  */
 function validarSesion()
 {
-    if (!isset($_SESSION['id_usuario'])) {
-        $url = URL;
-        if (!strpos($_SERVER['REQUEST_URI'], 'ingreso')) {
-            header("Location: {$url}/ingreso");
-        }
+  if (!isset($_SESSION['id_usuario'])) {
+    $url = URL;
+    if (!strpos($_SERVER['REQUEST_URI'], 'ingreso')) {
+      header("Location: {$url}/ingreso");
     }
+  }
 }
 
 validarSesion();
 
 
-require_once __DIR__ . '/vendor/autoload.php';
+
 
 # CONTROLADORES
 require_once "controladores/HelperController.php";
